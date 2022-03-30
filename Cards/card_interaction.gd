@@ -18,7 +18,7 @@ func inspect_this_card():
 		GameManager.inspect_card(card)
 
 func _process(delta):
-	if is_hovered():
+	if is_hovered() and card.get_parent() == GameManager.scene_card_pivot:
 		card.z_index = 1
 	else:
 		card.z_index = 0

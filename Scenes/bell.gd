@@ -17,4 +17,5 @@ func ring():
 
 # 铃铛撞击时触发
 func _on_ball_rb2d_body_entered(body):
-	print("bell sound")
+	# print("bell sound")
+	pass

@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Scenes/main.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/inspect_area_pivot.gd" type="Script" id=2]
@@ -15,12 +15,13 @@
 [ext_resource path="res://Textures/bell_body.png" type="Texture" id=13]
 [ext_resource path="res://Textures/bell_ball.png" type="Texture" id=14]
 [ext_resource path="res://Scenes/bell_button.gd" type="Script" id=15]
+[ext_resource path="res://Scenes/day_num_pivot.gd" type="Script" id=16]
 
 [sub_resource type="CircleShape2D" id=2]
 
 [sub_resource type="PhysicsMaterial" id=3]
 friction = 0.0
-bounce = 1.0
+bounce = 0.33
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 9.0
@@ -43,23 +44,30 @@ position = Vector2( 203, 18 )
 [node name="chara_card_pivot" type="Node2D" parent="table_pivot"]
 position = Vector2( -8, -16 )
 
-[node name="hand_cards_pivot" type="Node2D" parent="."]
-position = Vector2( 512, 550 )
-script = ExtResource( 7 )
+[node name="HUD" type="Node2D" parent="."]
+z_index = 1
 
-[node name="discard_pile_pivot" type="Sprite" parent="."]
-position = Vector2( 40, 492 )
-texture = ExtResource( 9 )
+[node name="draw_pile_pivot" type="Node2D" parent="HUD"]
+position = Vector2( 40, 560 )
 
-[node name="draw_pile_pivot" type="Sprite" parent="."]
+[node name="draw_pile_sprite" type="Sprite" parent="HUD"]
 position = Vector2( 40, 560 )
 texture = ExtResource( 9 )
 
-[node name="inspect_area_pivot" type="Node2D" parent="."]
+[node name="discard_pile_pivot" type="Node2D" parent="HUD"]
+position = Vector2( 40, 492 )
+
+[node name="discard_pile_sprite" type="Sprite" parent="HUD"]
+position = Vector2( 40, 492 )
+texture = ExtResource( 9 )
+
+[node name="hand_cards_pivot" type="Node2D" parent="HUD"]
+position = Vector2( 512, 550 )
+script = ExtResource( 7 )
+
+[node name="inspect_area_pivot" type="Node2D" parent="HUD"]
 position = Vector2( 512, 280 )
 script = ExtResource( 2 )
-
-[node name="HUD" type="Node2D" parent="."]
 
 [node name="resource_pivot" type="Node2D" parent="HUD"]
 script = ExtResource( 6 )
@@ -141,7 +149,7 @@ align = 1
 valign = 1
 
 [node name="bell" type="Node2D" parent="HUD"]
-position = Vector2( 975, 573 )
+position = Vector2( 950, 573 )
 script = ExtResource( 12 )
 
 [node name="root_rb2d" type="StaticBody2D" parent="HUD/bell"]
@@ -154,10 +162,9 @@ disabled = true
 [node name="ball_rb2d" type="RigidBody2D" parent="HUD/bell"]
 mass = 0.1
 physics_material_override = SubResource( 3 )
+gravity_scale = 4.0
 contacts_reported = 1
 contact_monitor = true
-linear_damp = 1.902
-angular_damp = 1.903
 
 [node name="ball" type="Sprite" parent="HUD/bell/ball_rb2d"]
 position = Vector2( 0, -30 )
@@ -171,7 +178,7 @@ shape = SubResource( 1 )
 [node name="body_rb2d" type="RigidBody2D" parent="HUD/bell"]
 position = Vector2( 0, -16 )
 gravity_scale = 24.0
-angular_damp = 20.0
+angular_damp = 28.0
 
 [node name="bell_button" type="TextureButton" parent="HUD/bell/body_rb2d"]
 margin_left = -28.0
@@ -200,5 +207,16 @@ softness = 2.06
 position = Vector2( 0, -61 )
 node_a = NodePath("../root_rb2d")
 node_b = NodePath("../body_rb2d")
+
+[node name="day_num_pivot" type="Label" parent="HUD"]
+margin_left = 954.0
+margin_top = 521.0
+margin_right = 1022.0
+margin_bottom = 552.0
+theme = ExtResource( 11 )
+text = "第n轮
+第n天"
+align = 1
+script = ExtResource( 16 )
 
 [connection signal="body_entered" from="HUD/bell/ball_rb2d" to="HUD/bell" method="_on_ball_rb2d_body_entered"]

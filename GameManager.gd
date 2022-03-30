@@ -14,15 +14,20 @@ var chara_card_pivot:Node2D
 var inspect_area_pivot:InspectCardPivot
 
 var hand_cards_pivot:HandCardsPivot
-var draw_pile_pivot:Sprite
-var discard_pile_pivot:Sprite
+var draw_pile_pivot:Node2D
+var discard_pile_pivot:Node2D
 
 var prompt:Label
 
 var bell:Bell
 
+enum phase_type{draw, start, control, discard, end}
+# 当前的游戏阶段
+var current_phase = phase_type.draw
+# 第几天
 var day_num:int = 0
-
+var period_num:int = 1
+# 资源
 var fish:int = 0
 var wood:int = 0
 var sanity:int = 3
@@ -45,19 +50,19 @@ func _ready():
 	if !resource_pivot:
 		print_debug("error: resource_pivot not found")
 		
-	inspect_area_pivot = get_node("/root/main/inspect_area_pivot")
+	inspect_area_pivot = get_node("/root/main/HUD/inspect_area_pivot")
 	if !inspect_area_pivot:
 		print_debug("error: inspect_area_pivot not found")
 		
-	hand_cards_pivot = get_node("/root/main/hand_cards_pivot")
+	hand_cards_pivot = get_node("/root/main/HUD/hand_cards_pivot")
 	if !hand_cards_pivot:
 		print_debug("error: hand_cards_pivot not found")
 		
-	draw_pile_pivot = get_node("/root/main/draw_pile_pivot")
+	draw_pile_pivot = get_node("/root/main/HUD/draw_pile_pivot")
 	if !draw_pile_pivot:
 		print_debug("error: draw_pile_pivot not found")
 	
-	discard_pile_pivot = get_node("/root/main/discard_pile_pivot")
+	discard_pile_pivot = get_node("/root/main/HUD/discard_pile_pivot")
 	if !discard_pile_pivot:
 		print_debug("error: discard_pile_pivot not found")
 	
@@ -100,8 +105,17 @@ func check_sanity()->void:
 func check_health()->void:
 	if health < 0:
 		health = 0
-		
-		
+
+# 开始一局新的游戏
+func start_new_game()->void:
+	print("开始新游戏")
+	
+	return
+
+# 清理场景，结束当前游戏
+func finish_game()->void:
+	print("结束游戏")
+	return
 
 # 获取坐标位置的网格
 func get_grid_at(x:int,y:int)->TableGrid:
@@ -279,11 +293,19 @@ func move_card_to_eliminate_area(card_instance:Card)->void:
 func trigger_start_phase()->void:
 	day_num += 1
 	print("第" + str(day_num) + "天开始阶段")
+	for c in get_chara_cards():
+		c.on_start_phase()
+	for c in get_scene_cards():
+		c.on_start_phase()
 	return
 	
 # 触发结束阶段
 func trigger_end_phase()->void:
 	print("第" + str(day_num) + "天结束阶段")
+	for c in get_chara_cards():
+		c.on_end_phase()
+	for c in get_scene_cards():
+		c.on_end_phase()
 	return
 
 # 触发抽牌阶段
