@@ -17,14 +17,16 @@ var hand_cards_pivot:HandCardsPivot
 var draw_pile_pivot:Sprite
 var discard_pile_pivot:Sprite
 
-var card_button:CardButton
+var prompt:Label
+
+var bell:Bell
 
 var day_num:int = 0
 
-var fish:int = 0 setget set_fish
-var wood:int = 0 setget set_wood
-var sanity:int = 3 setget set_sanity
-var health:int = 3 setget set_health
+var fish:int = 0
+var wood:int = 0
+var sanity:int = 3
+var health:int = 3
 
 func _ready():
 	grid_pivot = get_node("/root/main/table_pivot/grid_pivot")
@@ -59,49 +61,47 @@ func _ready():
 	if !discard_pile_pivot:
 		print_debug("error: discard_pile_pivot not found")
 	
-	card_button = get_node("/root/main/HUD/card_button")
-	if !card_button:
-		print_debug("error: card_button not found")
+	prompt = get_node("/root/main/HUD/prompt")
+	if !prompt:
+		print_debug("error: prompt not found")
+		
+	bell = get_node("/root/main/HUD/bell")
+	if !bell:
+		print_debug("error: bell not found")
 
 func fish_max()->int:
-	return 3
+	return 3 * count_in_scene_cards(CardLogCabin)
 	
 func wood_max()->int:
 	return 3
 
-func set_fish(num:int):
-	fish = num
+func check_resources():
+	check_fish()
+	check_wood()
+	check_health()
+	check_sanity()
+
+func check_fish():
 	if fish < 0:
 		fish = 0
 	elif fish > fish_max():
 		fish = fish_max()
-	
-	resource_pivot.renew_fish()
 
-
-func set_wood(num:int):
-	wood = num
+func check_wood():
 	if wood < 0:
 		wood = 0
 	elif wood > wood_max():
 		wood = wood_max()
-	
-	resource_pivot.renew_wood()
 
-
-func set_sanity(num:int)->void:
-	sanity = num
+func check_sanity()->void:
 	if sanity < 0:
 		sanity = 0
-	
-	resource_pivot.renew_sanity()
 
-func set_health(num:int)->void:
-	health = num
+func check_health()->void:
 	if health < 0:
 		health = 0
-	
-	resource_pivot.renew_health()
+		
+		
 
 # 获取坐标位置的网格
 func get_grid_at(x:int,y:int)->TableGrid:
@@ -196,7 +196,11 @@ func move_card_to_scene(card_instance:Card, x:int, y:int)->void:
 
 # 获取所有的场景卡
 func get_scene_cards()->Array:
-	return scene_card_pivot.get_children()
+	var cards: = scene_card_pivot.get_children()
+	var c := get_inspect_area_card()
+	if c and inspect_area_pivot.card_ori_state == "scene":
+		cards.append(c)
+	return cards
 
 
 # 放置卡片为角色
@@ -217,33 +221,55 @@ func move_card_to_chara(card_instance:Card, x:int, y:int)->void:
 	
 # 获取所有的角色卡
 func get_chara_cards()->Array:
-	return chara_card_pivot.get_children()
+	var cards: = chara_card_pivot.get_children()
+	var c := get_inspect_area_card()
+	if c and inspect_area_pivot.card_ori_state == "chara":
+		cards.append(c)
+	return cards
 
 # 置入节点并维持位置
 func change_parent_keep_position(node:Node2D, new_parent:Node2D)->void:
-	var p_global: = node.to_global(Vector2.ZERO)
+	var p_global: = node.position
 	var parent: = node.get_parent() as Node2D
 	if parent:
+		p_global = node.to_global(Vector2.ZERO)
 		parent.remove_child(node)
+		if parent == hand_cards_pivot:
+			hand_cards_pivot.reset_cards_position()
 	new_parent.add_child(node)
 	node.position = new_parent.to_local(p_global) 
+	
 
 
 # 获取所有的手卡
 func get_hand_cards()->Array:
-	return hand_cards_pivot.get_children()
+	var cards: = hand_cards_pivot.get_children()
+	var c := get_inspect_area_card()
+	if c and inspect_area_pivot.card_ori_state == "hand":
+		cards.append(c)
+	return cards
 
 # 获取所有抽牌堆卡片
 func get_draw_pile_cards()->Array:
-	return draw_pile_pivot.get_children()
+	var cards: = draw_pile_pivot.get_children()
+	var c := get_inspect_area_card()
+	if c and inspect_area_pivot.card_ori_state == "draw":
+		cards.append(c)
+	return cards
 
 # 获取所有弃牌堆卡片
 func get_discard_pile_cards()->Array:
-	return discard_pile_pivot.get_children()
+	var cards: = discard_pile_pivot.get_children()
+	var c := get_inspect_area_card()
+	if c and inspect_area_pivot.card_ori_state == "discard":
+		cards.append(c)
+	return cards
 
 # 获取检视区卡片
 func get_inspect_area_card()->Card:
-	return inspect_area_pivot.get_child(0) as Card
+	if !inspect_area_pivot.get_children().empty():
+		return inspect_area_pivot.get_child(0) as Card
+	return null
 
 # 把卡片移动到剔除区
 func move_card_to_eliminate_area(card_instance:Card)->void:
@@ -279,21 +305,28 @@ func shuffel_draw_pile()->void:
 	print("抽牌堆洗牌")
 
 # 设置手卡显示状态(上下运动)
-func set_hand_cards_display(show:bool):
+func set_hand_cards_display(show:bool)->void:
 	hand_cards_pivot.flag_show = show
 
 # 拿起卡片进行检视
-func inspect_card(card_instance:Card):
-	inspect_area_pivot.card_ori_state = card_instance.get_state()
+func inspect_card(card_instance:Card)->void:
+	print("检视卡片%s" % card_instance)
+	var card_state = card_instance.get_state()
+	if card_state == "inspect":
+		print("不可检视正在检视的卡片")
+		return
+	finish_inspect_card()
 	move_card_to_inspect_area(card_instance)
+	inspect_area_pivot.card_ori_state = card_state
 
 # 结束检视卡片
-func finish_inspect_card():
+func finish_inspect_card()->void:
 	var c:Card = get_inspect_area_card()
 	if !c:
 		print("停止检视卡片，没有卡片")
 		return
 	else:
+		print("停止检视卡片")
 		if inspect_area_pivot.card_ori_state == "chara":
 			move_card_to_chara(c,c.grid_x,c.grid_y)
 		elif inspect_area_pivot.card_ori_state == "scene":
@@ -304,3 +337,26 @@ func finish_inspect_card():
 			move_card_to_draw_pile(c)
 		elif inspect_area_pivot.card_ori_state == "discard":
 			move_card_to_discard_pile(c)
+		else:
+			print_debug("error: 检视的卡片状态错误%s" % inspect_area_pivot.card_ori_state)
+
+# 设置提示语
+func set_prompt(msg:String,color:Color = Color.white):
+	print("提示语:%s" % msg)
+	prompt.text = msg
+	prompt.modulate = color
+
+func count_in_chara_cards(card_type)->int:
+	var count:int = 0
+	for i in get_chara_cards():
+		if i is card_type:
+			count += 1
+	return count
+
+# 从场景卡中数出某种卡片的数量
+func count_in_scene_cards(card_type)->int:
+	var count:int = 0
+	for i in get_scene_cards():
+		if i is card_type:
+			count += 1
+	return count

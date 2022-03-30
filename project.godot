@@ -10,14 +10,14 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Node2D",
+"class": "Bell",
+"language": "GDScript",
+"path": "res://Scenes/bell.gd"
+}, {
+"base": "Node2D",
 "class": "Card",
 "language": "GDScript",
 "path": "res://Cards/Card.gd"
-}, {
-"base": "Button",
-"class": "CardButton",
-"language": "GDScript",
-"path": "res://Scenes/card_button.gd"
 }, {
 "base": "Card",
 "class": "CardLogCabin",
@@ -60,8 +60,8 @@ _global_script_classes=[ {
 "path": "res://TaskNode/TaskNodeSimple.gd"
 } ]
 _global_script_class_icons={
+"Bell": "",
 "Card": "",
-"CardButton": "",
 "CardLogCabin": "",
 "HandCardsPivot": "",
 "InspectCardPivot": "",

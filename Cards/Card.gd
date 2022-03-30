@@ -10,12 +10,12 @@ var tar_scale:float = 1
 var grid_x:int = -1
 var grid_y:int = -1
 
-var canvas_item:CanvasItem
+var card_sprite:Sprite
 
 func _ready():
-	canvas_item = get_node("Sprite") as CanvasItem
-	if(!canvas_item):
-		print_debug("error: canvas_item not found")
+	card_sprite = get_node("card_sprite") as Sprite
+	if(!card_sprite):
+		print_debug("error: card_sprite not found")
 
 # 开始阶段时
 func on_start_phase()->void:
@@ -78,9 +78,8 @@ func _physics_process(delta):
 # 判断卡片当前状态
 func get_state()->String:
 	var parent = get_parent()
-	if !parent:
-		return "scene"
-	elif parent == GameManager.chara_card_pivot:
+	print(parent)
+	if parent == GameManager.chara_card_pivot:
 		return "chara"
 	elif parent == GameManager.scene_card_pivot:
 		return "scene"
@@ -95,4 +94,3 @@ func get_state()->String:
 	else:
 		print_debug("error: 卡片父级发生错误 "+str(parent))
 		return "error"
-	pass

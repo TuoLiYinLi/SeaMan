@@ -7,7 +7,7 @@
 script = ExtResource( 1 )
 multiplier = 100.0
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="card_sprite" type="Sprite" parent="."]
 
 [node name="card_interaction" type="TextureButton" parent="."]
 margin_left = -31.0

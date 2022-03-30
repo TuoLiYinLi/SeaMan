@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Scenes/main.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/inspect_area_pivot.gd" type="Script" id=2]
@@ -9,11 +9,29 @@
 [ext_resource path="res://Scenes/hand_cards_pivot.gd" type="Script" id=7]
 [ext_resource path="res://Textures/wood_icon.png" type="Texture" id=8]
 [ext_resource path="res://Textures/card_back.png" type="Texture" id=9]
-[ext_resource path="res://Scenes/card_button.gd" type="Script" id=10]
+[ext_resource path="res://Scenes/void_area.gd" type="Script" id=10]
 [ext_resource path="res://Theme/seaman_theme.tres" type="Theme" id=11]
+[ext_resource path="res://Scenes/bell.gd" type="Script" id=12]
+[ext_resource path="res://Textures/bell_body.png" type="Texture" id=13]
+[ext_resource path="res://Textures/bell_ball.png" type="Texture" id=14]
+[ext_resource path="res://Scenes/bell_button.gd" type="Script" id=15]
+
+[sub_resource type="CircleShape2D" id=2]
+
+[sub_resource type="PhysicsMaterial" id=3]
+friction = 0.0
+bounce = 1.0
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 9.0
 
 [node name="main" type="Node2D"]
 script = ExtResource( 1 )
+
+[node name="void_area" type="TextureButton" parent="."]
+margin_right = 1024.0
+margin_bottom = 600.0
+script = ExtResource( 10 )
 
 [node name="table_pivot" type="Node2D" parent="."]
 position = Vector2( 203, 18 )
@@ -110,12 +128,73 @@ scroll_active = false
 position = Vector2( 8, 8 )
 texture = ExtResource( 4 )
 
-[node name="card_button" type="Button" parent="HUD"]
-margin_left = 480.0
+[node name="prompt" type="Label" parent="HUD"]
+margin_left = 250.0
 margin_top = 440.0
-margin_right = 544.0
-margin_bottom = 464.0
+margin_right = 512.0
+margin_bottom = 454.0
+rect_scale = Vector2( 2, 2 )
 theme = ExtResource( 11 )
-text = "◈ 按钮"
-expand_icon = true
-script = ExtResource( 10 )
+custom_colors/font_color_shadow = Color( 1, 1, 1, 0.25098 )
+text = "prompt text"
+align = 1
+valign = 1
+
+[node name="bell" type="Node2D" parent="HUD"]
+position = Vector2( 975, 573 )
+script = ExtResource( 12 )
+
+[node name="root_rb2d" type="StaticBody2D" parent="HUD/bell"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HUD/bell/root_rb2d"]
+position = Vector2( 0, -85 )
+shape = SubResource( 2 )
+disabled = true
+
+[node name="ball_rb2d" type="RigidBody2D" parent="HUD/bell"]
+mass = 0.1
+physics_material_override = SubResource( 3 )
+linear_damp = 1.902
+angular_damp = 1.903
+
+[node name="ball" type="Sprite" parent="HUD/bell/ball_rb2d"]
+position = Vector2( 0, -30 )
+texture = ExtResource( 14 )
+offset = Vector2( 0, 36 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HUD/bell/ball_rb2d"]
+position = Vector2( 0, 6 )
+shape = SubResource( 1 )
+
+[node name="body_rb2d" type="RigidBody2D" parent="HUD/bell"]
+position = Vector2( 0, -16 )
+gravity_scale = 11.07
+angular_damp = 37.0
+
+[node name="bell_button" type="TextureButton" parent="HUD/bell/body_rb2d"]
+margin_left = -28.0
+margin_top = -83.0
+margin_right = 26.0
+margin_bottom = 23.0
+script = ExtResource( 15 )
+
+[node name="body" type="Sprite" parent="HUD/bell/body_rb2d"]
+position = Vector2( -1.09998, -69 )
+texture = ExtResource( 13 )
+offset = Vector2( 0, 36 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="HUD/bell/body_rb2d"]
+position = Vector2( -0.0999756, 16 )
+polygon = PoolVector2Array( -39.9, 20, -39.9, -12, 0.0999756, -61, 39.1, -5, 39.1, 22, 0, -32 )
+
+[node name="PinJoint2D" type="PinJoint2D" parent="HUD/bell"]
+position = Vector2( -1, -41 )
+node_a = NodePath("../ball_rb2d")
+node_b = NodePath("../body_rb2d")
+disable_collision = false
+softness = 2.06
+
+[node name="PinJoint2D2" type="PinJoint2D" parent="HUD/bell"]
+position = Vector2( 0, -61 )
+node_a = NodePath("../root_rb2d")
+node_b = NodePath("../body_rb2d")

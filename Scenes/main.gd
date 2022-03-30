@@ -2,6 +2,8 @@
 
 extends Node2D
 
+var G := GameManager
+
 var t=0
 var c
 
@@ -9,21 +11,34 @@ func _ready():
 	GameManager.create_grid_rect(9,9)
 	GameManager.get_grid_at(1,2).set_sea()
 	c = GameManager.create_card(GameManager.card_log_cabin)
-	GameManager.move_card_to_inspect_area(c)
-	c = GameManager.create_card(GameManager.card_log_cabin)
 	GameManager.move_card_to_hand(c)
 	c = GameManager.create_card(GameManager.card_log_cabin)
 	GameManager.move_card_to_hand(c)
 	c = GameManager.create_card(GameManager.card_log_cabin)
 	GameManager.move_card_to_hand(c)
+	c = GameManager.create_card(GameManager.card_log_cabin)
+	GameManager.move_card_to_chara(c,2,2)
+	c = GameManager.create_card(GameManager.card_log_cabin)
+	GameManager.move_card_to_scene(c,2,2)
+	c = GameManager.create_card(GameManager.card_log_cabin)
+	GameManager.move_card_to_chara(c,1,2)
+	c = GameManager.create_card(GameManager.card_log_cabin)
+	GameManager.move_card_to_scene(c,2,7)
+	c = GameManager.create_card(GameManager.card_log_cabin)
+	G.set_prompt("")
 
 func _process(delta):
+	
 	control_view(delta)
 	t += 1
 	if(t == 500):
-		GameManager.set_hand_cards_display(false)
-		GameManager.card_button.set_as_card_activate_button()
-	
+		G.set_prompt("测试")
+		#GameManager.inspect_card(c)
+		pass
+		#GameManager.set_hand_cards_display(false)
+	if(t == 1000):
+		#GameManager.finish_inspect_card()
+		pass
 
 # 控制视角
 func control_view(delta):

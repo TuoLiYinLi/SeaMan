@@ -13,8 +13,11 @@ func _ready():
 	node_wood_num = $wood_pivot/wood_num
 	node_sanity_num = $sanity_pivot/sanity_num
 	node_health_num = $health_pivot/health_num
+
+func _process(delta):
+	GameManager.check_resources()
 	renew_all()
-	
+
 func renew_all():
 	renew_fish()
 	renew_wood()
