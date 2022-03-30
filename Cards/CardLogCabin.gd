@@ -1,0 +1,2 @@
+extends SceneCard
+class_name CardLogCabin

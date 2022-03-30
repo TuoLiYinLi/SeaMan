@@ -1,0 +1,132 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "Node2D",
+"class": "Card",
+"language": "GDScript",
+"path": "res://Cards/Card.gd"
+}, {
+"base": "SceneCard",
+"class": "CardLogCabin",
+"language": "GDScript",
+"path": "res://Cards/CardLogCabin.gd"
+}, {
+"base": "",
+"class": "GitAPI",
+"language": "NativeScript",
+"path": "res://addons/godot-git-plugin/git_api.gdns"
+}, {
+"base": "Node2D",
+"class": "ResourcePivot",
+"language": "GDScript",
+"path": "res://Scenes/resource_pivot.gd"
+}, {
+"base": "Card",
+"class": "SceneCard",
+"language": "GDScript",
+"path": "res://Cards/SceneCard.gd"
+}, {
+"base": "Node2D",
+"class": "TableGrid",
+"language": "GDScript",
+"path": "res://Scenes/table_grid.gd"
+}, {
+"base": "Node",
+"class": "TaskNode",
+"language": "GDScript",
+"path": "res://TaskNode/TaskNode.gd"
+}, {
+"base": "TaskNode",
+"class": "TaskNodeBlocking",
+"language": "GDScript",
+"path": "res://TaskNode/TaskNodeBlocking.gd"
+}, {
+"base": "TaskNode",
+"class": "TaskNodeSimple",
+"language": "GDScript",
+"path": "res://TaskNode/TaskNodeSimple.gd"
+} ]
+_global_script_class_icons={
+"Card": "",
+"CardLogCabin": "",
+"GitAPI": "",
+"ResourcePivot": "",
+"SceneCard": "",
+"TableGrid": "",
+"TaskNode": "",
+"TaskNodeBlocking": "",
+"TaskNodeSimple": ""
+}
+
+[application]
+
+config/name="海人"
+run/main_scene="res://Scenes/main.tscn"
+config/icon="res://Textures/sun_rise.png"
+
+[autoload]
+
+GameManager="*res://GameManager.gd"
+
+[display]
+
+window/size/resizable=false
+
+[gdnative]
+
+singletons=[ "res://addons/godot-git-plugin/git_api.gdnlib" ]
+
+[importer_defaults]
+
+texture={
+"compress/mode": 3,
+"detect_3d": false,
+"flags/filter": false
+}
+
+[input]
+
+ui_left={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777231,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+, Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":14,"pressure":0.0,"pressed":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":65,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+ui_right={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777233,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+, Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":15,"pressure":0.0,"pressed":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":68,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+ui_up={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777232,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+, Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":12,"pressure":0.0,"pressed":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":87,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+ui_down={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777234,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+, Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":13,"pressure":0.0,"pressed":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":83,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+
+[physics]
+
+common/enable_pause_aware_picking=true
+
+[rendering]
+
+environment/default_environment="res://default_env.tres"
