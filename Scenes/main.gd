@@ -16,13 +16,13 @@ func _ready():
 	GameManager.move_card_to_hand(c)
 	c = GameManager.create_card(GameManager.card_log_cabin)
 	GameManager.move_card_to_hand(c)
-	
 
 func _process(delta):
 	control_view(delta)
 	t += 1
 	if(t == 500):
 		GameManager.set_hand_cards_display(false)
+		GameManager.card_button.set_as_card_activate_button()
 	
 
 # 控制视角

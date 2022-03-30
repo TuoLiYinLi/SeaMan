@@ -5,7 +5,7 @@ extends Node
 var table_grid: = preload("res://Scenes/table_grid.tscn")
 var card_log_cabin = preload("res://Cards/card_log_cabin.tscn")
 
-var resource_pivot:Node2D
+var resource_pivot:ResourcePivot
 
 var grid_pivot:Node2D
 var scene_card_pivot:Node2D
@@ -13,9 +13,11 @@ var chara_card_pivot:Node2D
 
 var inspect_area_pivot:Node2D
 
-var hand_cards_pivot:Node2D
+var hand_cards_pivot:HandCardsPivot
 var draw_pile_pivot:Sprite
 var discard_pile_pivot:Sprite
+
+var card_button:CardButton
 
 var day_num:int = 0
 
@@ -36,7 +38,7 @@ func _ready():
 		print_debug("error: scene_card_pivot not found")
 		
 	chara_card_pivot = get_node("/root/main/table_pivot/chara_card_pivot")
-	if !scene_card_pivot:
+	if !chara_card_pivot:
 		print_debug("error: chara_card_pivot not found")
 		
 	resource_pivot = get_node("/root/main/HUD/resource_pivot")
@@ -51,13 +53,17 @@ func _ready():
 	if !hand_cards_pivot:
 		print_debug("error: hand_cards_pivot not found")
 		
-	draw_pile_pivot=get_node("/root/main/draw_pile_pivot")
+	draw_pile_pivot = get_node("/root/main/draw_pile_pivot")
 	if !draw_pile_pivot:
 		print_debug("error: draw_pile_pivot not found")
 	
-	discard_pile_pivot=get_node("/root/main/discard_pile_pivot")
-	if !draw_pile_pivot:
+	discard_pile_pivot = get_node("/root/main/discard_pile_pivot")
+	if !discard_pile_pivot:
 		print_debug("error: discard_pile_pivot not found")
+	
+	card_button = get_node("/root/main/HUD/card_button")
+	if !card_button:
+		print_debug("error: card_button not found")
 
 func fish_max()->int:
 	return 3

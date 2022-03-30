@@ -1,6 +1,7 @@
 # 手卡锚点脚本
 
 extends Node2D
+class_name HandCardsPivot
 
 export(float) var area_width:float = 400 #卡片存在的宽度范围
 export(float) var gap_width:float = 72 #卡片间的距离

@@ -14,15 +14,20 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Cards/Card.gd"
 }, {
+"base": "Button",
+"class": "CardButton",
+"language": "GDScript",
+"path": "res://Scenes/card_button.gd"
+}, {
 "base": "SceneCard",
 "class": "CardLogCabin",
 "language": "GDScript",
 "path": "res://Cards/CardLogCabin.gd"
 }, {
-"base": "",
-"class": "GitAPI",
-"language": "NativeScript",
-"path": "res://addons/godot-git-plugin/git_api.gdns"
+"base": "Node2D",
+"class": "HandCardsPivot",
+"language": "GDScript",
+"path": "res://Scenes/hand_cards_pivot.gd"
 }, {
 "base": "Node2D",
 "class": "ResourcePivot",
@@ -56,8 +61,9 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Card": "",
+"CardButton": "",
 "CardLogCabin": "",
-"GitAPI": "",
+"HandCardsPivot": "",
 "ResourcePivot": "",
 "SceneCard": "",
 "TableGrid": "",
@@ -82,7 +88,7 @@ window/size/resizable=false
 
 [gdnative]
 
-singletons=[ "res://addons/godot-git-plugin/git_api.gdnlib" ]
+singletons=[  ]
 
 [importer_defaults]
 
