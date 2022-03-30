@@ -11,7 +11,7 @@ var grid_pivot:Node2D
 var scene_card_pivot:Node2D
 var chara_card_pivot:Node2D
 
-var inspect_area_pivot:Node2D
+var inspect_area_pivot:InspectCardPivot
 
 var hand_cards_pivot:HandCardsPivot
 var draw_pile_pivot:Sprite
@@ -25,8 +25,6 @@ var fish:int = 0 setget set_fish
 var wood:int = 0 setget set_wood
 var sanity:int = 3 setget set_sanity
 var health:int = 3 setget set_health
-
-enum game_state {waiting, running}
 
 func _ready():
 	grid_pivot = get_node("/root/main/table_pivot/grid_pivot")
@@ -279,8 +277,30 @@ func trigger_discard_phase()->void:
 # 将抽牌堆洗牌
 func shuffel_draw_pile()->void:
 	print("抽牌堆洗牌")
-	pass
 
-# 设置手卡显示状态
+# 设置手卡显示状态(上下运动)
 func set_hand_cards_display(show:bool):
 	hand_cards_pivot.flag_show = show
+
+# 拿起卡片进行检视
+func inspect_card(card_instance:Card):
+	inspect_area_pivot.card_ori_state = card_instance.get_state()
+	move_card_to_inspect_area(card_instance)
+
+# 结束检视卡片
+func finish_inspect_card():
+	var c:Card = get_inspect_area_card()
+	if !c:
+		print("停止检视卡片，没有卡片")
+		return
+	else:
+		if inspect_area_pivot.card_ori_state == "chara":
+			move_card_to_chara(c,c.grid_x,c.grid_y)
+		elif inspect_area_pivot.card_ori_state == "scene":
+			move_card_to_scene(c,c.grid_x,c.grid_y)
+		elif inspect_area_pivot.card_ori_state == "hand":
+			move_card_to_hand(c)
+		elif inspect_area_pivot.card_ori_state == "draw":
+			move_card_to_draw_pile(c)
+		elif inspect_area_pivot.card_ori_state == "discard":
+			move_card_to_discard_pile(c)

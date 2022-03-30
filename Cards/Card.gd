@@ -74,3 +74,25 @@ func tween_d(distance:float)->float:
 
 func _physics_process(delta):
 	tween_animation(delta)
+
+# 判断卡片当前状态
+func get_state()->String:
+	var parent = get_parent()
+	if !parent:
+		return "scene"
+	elif parent == GameManager.chara_card_pivot:
+		return "chara"
+	elif parent == GameManager.scene_card_pivot:
+		return "scene"
+	elif parent == GameManager.hand_cards_pivot:
+		return "hand"
+	elif parent == GameManager.draw_pile_pivot:
+		return "draw"
+	elif parent == GameManager.discard_pile_pivot:
+		return "discard"
+	elif parent == GameManager.inspect_area_pivot:
+		return "inspect"
+	else:
+		print_debug("error: 卡片父级发生错误 "+str(parent))
+		return "error"
+	pass

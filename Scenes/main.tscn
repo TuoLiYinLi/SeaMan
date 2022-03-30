@@ -1,6 +1,7 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Scenes/main.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/inspect_area_pivot.gd" type="Script" id=2]
 [ext_resource path="res://Textures/icon_fish.png" type="Texture" id=3]
 [ext_resource path="res://Textures/icon_health.png" type="Texture" id=4]
 [ext_resource path="res://Textures/icon_sanity.png" type="Texture" id=5]
@@ -38,6 +39,7 @@ texture = ExtResource( 9 )
 
 [node name="inspect_area_pivot" type="Node2D" parent="."]
 position = Vector2( 512, 280 )
+script = ExtResource( 2 )
 
 [node name="HUD" type="Node2D" parent="."]
 
