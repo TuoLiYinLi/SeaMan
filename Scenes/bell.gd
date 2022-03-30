@@ -12,5 +12,9 @@ func _ready():
 
 func ring():
 	bell_body.apply_torque_impulse(d * 60000)
-	d = -d
+	d = - d
 	
+
+# 铃铛撞击时触发
+func _on_ball_rb2d_body_entered(body):
+	print("bell sound")

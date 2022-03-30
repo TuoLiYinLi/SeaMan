@@ -154,6 +154,8 @@ disabled = true
 [node name="ball_rb2d" type="RigidBody2D" parent="HUD/bell"]
 mass = 0.1
 physics_material_override = SubResource( 3 )
+contacts_reported = 1
+contact_monitor = true
 linear_damp = 1.902
 angular_damp = 1.903
 
@@ -168,8 +170,8 @@ shape = SubResource( 1 )
 
 [node name="body_rb2d" type="RigidBody2D" parent="HUD/bell"]
 position = Vector2( 0, -16 )
-gravity_scale = 11.07
-angular_damp = 37.0
+gravity_scale = 24.0
+angular_damp = 20.0
 
 [node name="bell_button" type="TextureButton" parent="HUD/bell/body_rb2d"]
 margin_left = -28.0
@@ -198,3 +200,5 @@ softness = 2.06
 position = Vector2( 0, -61 )
 node_a = NodePath("../root_rb2d")
 node_b = NodePath("../body_rb2d")
+
+[connection signal="body_entered" from="HUD/bell/ball_rb2d" to="HUD/bell" method="_on_ball_rb2d_body_entered"]
