@@ -35,9 +35,13 @@ func use():
 	GameManager.set_inspect_permission(true)
 	GameManager.set_prompt("")
 	
+	var result = GameManager.draw_card()
+	if result is GDScriptFunctionState:
+		yield(result,"completed")
+	
 func filter_grid(g:TableGrid)->bool:
 	return !g.flag_sea and !GameManager.get_scene_card_at(g.x,g.y)
 
 # 当被从场上摧毁时
 func on_destroy()->void:
-	pass
+	GameManager.wood += 2

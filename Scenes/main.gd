@@ -12,23 +12,24 @@ var a:Array
 func _ready():
 	G.create_grid_rect(9,9)
 	
-	G.get_grid_at(1,2).set_sea()
-	
-	c = G.create_card(G.card_woods)
+	c = G.create_card(G.card_slime)
 	G.move_card_to_draw_pile(c)
-	
-	c = G.create_card(G.card_woods)
-	G.move_card_to_draw_pile(c)
-	
-	c = G.create_card(G.card_log_cabin)
-	G.move_card_to_draw_pile(c)
-	
-	c = G.create_card(G.card_log_cabin)
-	G.move_card_to_draw_pile(c)
-	
 	
 	c = G.create_card(G.card_log_cabin)
 	G.move_card_to_scene(c,4,4)
+	
+	c = G.create_card(G.card_woods)
+	G.move_card_to_draw_pile(c)
+	
+	c = G.create_card(G.card_woods)
+	G.move_card_to_draw_pile(c)
+	
+	c = G.create_card(G.card_log_cabin)
+	G.move_card_to_draw_pile(c)
+	
+	c = G.create_card(G.card_log_cabin)
+	G.move_card_to_draw_pile(c)	
+	
 	
 	G.trigger_start_phase()
 	

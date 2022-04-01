@@ -4,7 +4,7 @@
 [ext_resource path="res://Cards/Card.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Cards/CardLogCabin.gd" type="Script" id=3]
 
-[node name="card_root" instance=ExtResource( 2 )]
+[node name="card_log_cabin" instance=ExtResource( 2 )]
 script = ExtResource( 3 )
 
 [node name="card_sprite" parent="." index="0"]

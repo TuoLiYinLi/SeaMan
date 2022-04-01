@@ -3,8 +3,9 @@
 extends Node
 
 var table_grid: = preload("res://Scenes/table_grid.tscn")
-var card_log_cabin = preload("res://Cards/card_log_cabin.tscn")
-var card_woods = preload("res://Cards/card_woods.tscn")
+var card_log_cabin: = preload("res://Cards/card_log_cabin.tscn")
+var card_woods: = preload("res://Cards/card_woods.tscn")
+var card_slime: = preload("res://Cards/card_slime.tscn")
 
 var resource_pivot:ResourcePivot
 
@@ -174,6 +175,13 @@ func move_card_to_draw_pile(card_instance:Card)->void:
 	card_instance.position_tar_y = 0
 	card_instance.tar_distance = 1
 
+# 破坏卡片（触发破坏）
+func destroy_card(card:Card):
+	move_card_to_discard_pile(card)
+	var result = card.on_destroy()
+	if result is GDScriptFunctionState:
+		yield(result,"completed")
+
 # 把卡片移动到弃牌堆
 func move_card_to_discard_pile(card_instance:Card)->void:
 	if !card_instance:
@@ -185,6 +193,36 @@ func move_card_to_discard_pile(card_instance:Card)->void:
 	card_instance.position_tar_x = 0
 	card_instance.position_tar_y = 0
 	card_instance.tar_distance = 1
+
+# 计算范围距离
+func distance_between(x1:int, y1:int, x2:int, y2:int)->int:
+	return (abs(x1 - x2) + abs(y1 - y2)) as int
+
+# 场景卡按照距离排序
+func find_nearst_scene(x:int, y:int)->Array:
+	var cards:Array = get_scene_cards()
+	var cds: = CardDistanceSorter.new(x,y)
+	cards.sort_custom(cds,"compare")
+	return cards
+
+# 角色卡按照距离排序
+func find_nearst_chara(x:int, y:int)->Array:
+	var cards:Array = get_chara_cards()
+	var cds: = CardDistanceSorter.new(x,y)
+	cards.sort_custom(cds,"compare")
+	return cards
+	
+# 用于自定义排序的类
+class CardDistanceSorter:
+	var tar_x:int
+	var tar_y:int
+	func _init(x:int,y:int):
+		tar_x = x
+		tar_y = y
+	func compare(c1:Card, c2:Card)->bool:
+		var d1 = GameManager.distance_between(c1.grid_x, c1.grid_y, tar_x, tar_y)
+		var d2 = GameManager.distance_between(c2.grid_x, c2.grid_y, tar_x, tar_y)
+		return d2 > d1 
 
 # 检视卡片
 func move_card_to_inspect_area(card_instance:Card)->void:
@@ -244,7 +282,7 @@ func move_card_to_chara(card_instance:Card, x:int, y:int)->void:
 	card_instance.position_tar_x = x * 64 + 32
 	card_instance.position_tar_y = y * 64 + 32
 	card_instance.tar_distance = 1
-	
+
 # 获取所有的角色卡
 func get_chara_cards()->Array:
 	var cards: = chara_card_pivot.get_children()
@@ -384,6 +422,7 @@ func trigger_control_phase()->void:
 	yield(GameManager,"control_finished")
 	set_inspect_permission(false)
 	print("控制阶段结束")
+	yield(get_tree().create_timer(0.2),"timeout")
 	trigger_end_phase()
 	
 # 触发弃牌阶段
