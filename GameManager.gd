@@ -4,6 +4,7 @@ extends Node
 
 var table_grid: = preload("res://Scenes/table_grid.tscn")
 var card_log_cabin = preload("res://Cards/card_log_cabin.tscn")
+var card_woods = preload("res://Cards/card_woods.tscn")
 
 var resource_pivot:ResourcePivot
 
@@ -21,9 +22,14 @@ var prompt:Label
 
 var bell:Bell
 
-enum phase_type{draw, start, control, discard, end}
-# 当前的游戏阶段
-var current_phase = phase_type.draw
+# 结束控制阶段信号
+signal control_finished
+# 按下的网格，传递它的坐标
+signal table_grid_pressed(grid_x, grid_y)
+
+# 是否允许检视卡片标志
+var flag_inspect_state = false
+
 # 第几天
 var day_num:int = 0
 var period_num:int = 1
@@ -153,7 +159,7 @@ func move_card_to_hand(card_instance:Card)->void:
 	print("移动卡片到手牌" + card_instance.to_string())
 	change_parent_keep_position(card_instance, hand_cards_pivot)
 	
-	card_instance.tar_scale = 1.5
+	card_instance.tar_distance = 0.7
 	hand_cards_pivot.reset_cards_position()
 	
 # 把卡片移动到抽牌堆
@@ -166,7 +172,7 @@ func move_card_to_draw_pile(card_instance:Card)->void:
 	
 	card_instance.position_tar_x = 0
 	card_instance.position_tar_y = 0
-	card_instance.tar_scale = 1
+	card_instance.tar_distance = 1
 
 # 把卡片移动到弃牌堆
 func move_card_to_discard_pile(card_instance:Card)->void:
@@ -178,7 +184,7 @@ func move_card_to_discard_pile(card_instance:Card)->void:
 	
 	card_instance.position_tar_x = 0
 	card_instance.position_tar_y = 0
-	card_instance.tar_scale = 1
+	card_instance.tar_distance = 1
 
 # 检视卡片
 func move_card_to_inspect_area(card_instance:Card)->void:
@@ -190,7 +196,7 @@ func move_card_to_inspect_area(card_instance:Card)->void:
 	
 	card_instance.position_tar_x = 0
 	card_instance.position_tar_y = 0
-	card_instance.tar_scale = 4
+	card_instance.tar_distance = 0.25
 
 # 放置卡片为场景
 func move_card_to_scene(card_instance:Card, x:int, y:int)->void:
@@ -206,7 +212,7 @@ func move_card_to_scene(card_instance:Card, x:int, y:int)->void:
 	change_parent_keep_position(card_instance, scene_card_pivot)
 	card_instance.position_tar_x = x * 64 + 32
 	card_instance.position_tar_y = y * 64 + 32
-	card_instance.tar_scale = 1
+	card_instance.tar_distance = 1
 
 # 获取所有的场景卡
 func get_scene_cards()->Array:
@@ -216,6 +222,12 @@ func get_scene_cards()->Array:
 		cards.append(c)
 	return cards
 
+# 获取某一位置的场景卡
+func get_scene_card_at(x:int, y:int)->Card:
+	for c in get_scene_cards():
+		if c.grid_x == x and c.grid_y == y:
+			return c
+	return null
 
 # 放置卡片为角色
 func move_card_to_chara(card_instance:Card, x:int, y:int)->void:
@@ -231,7 +243,7 @@ func move_card_to_chara(card_instance:Card, x:int, y:int)->void:
 	change_parent_keep_position(card_instance, chara_card_pivot)
 	card_instance.position_tar_x = x * 64 + 32
 	card_instance.position_tar_y = y * 64 + 32
-	card_instance.tar_scale = 1
+	card_instance.tar_distance = 1
 	
 # 获取所有的角色卡
 func get_chara_cards()->Array:
@@ -240,6 +252,13 @@ func get_chara_cards()->Array:
 	if c and inspect_area_pivot.card_ori_state == "chara":
 		cards.append(c)
 	return cards
+	
+# 获取某一位置的角色卡
+func get_chara_card_at(x:int, y:int)->Card:
+	for c in get_chara_cards():
+		if c.grid_x == x and c.grid_y == y:
+			return c
+	return null
 
 # 置入节点并维持位置
 func change_parent_keep_position(node:Node2D, new_parent:Node2D)->void:
@@ -253,7 +272,18 @@ func change_parent_keep_position(node:Node2D, new_parent:Node2D)->void:
 	new_parent.add_child(node)
 	node.position = new_parent.to_local(p_global) 
 	
-
+# 获取所有卡片
+func get_all_cards()->Array:
+	var cards: = hand_cards_pivot.get_children()
+	cards.append_array(chara_card_pivot.get_children())
+	cards.append_array(scene_card_pivot.get_children())
+	cards.append_array(draw_pile_pivot.get_children())
+	cards.append_array(discard_pile_pivot.get_children())
+	var c = get_inspect_area_card()
+	if c:
+		cards.append(c)
+	return cards
+	
 
 # 获取所有的手卡
 func get_hand_cards()->Array:
@@ -294,33 +324,73 @@ func trigger_start_phase()->void:
 	day_num += 1
 	print("第" + str(day_num) + "天开始阶段")
 	for c in get_chara_cards():
-		c.on_start_phase()
+		var result = c.on_start_phase()
+		if result is GDScriptFunctionState:
+			yield(result,"completed")
 	for c in get_scene_cards():
-		c.on_start_phase()
-	return
+		var result = c.on_start_phase()
+		if result is GDScriptFunctionState:
+			yield(result,"completed")
+	print("开始阶段完成")
+	trigger_draw_phase()
 	
 # 触发结束阶段
 func trigger_end_phase()->void:
 	print("第" + str(day_num) + "天结束阶段")
 	for c in get_chara_cards():
-		c.on_end_phase()
+		var result = c.on_end_phase()
+		if result is GDScriptFunctionState:
+			yield(result,"completed")
 	for c in get_scene_cards():
-		c.on_end_phase()
-	return
+		var result = c.on_end_phase()
+		if result is GDScriptFunctionState:
+			yield(result,"completed")
+	
+	print("结束阶段完成")
+	trigger_discard_phase()
 
 # 触发抽牌阶段
 func trigger_draw_phase()->void:
 	print("玩家抽牌阶段")
-	return
+	var result = draw_card()
+	if result is GDScriptFunctionState:
+		yield(result,"completed")
+	print("抽卡阶段完成")
+	trigger_control_phase()
+
+# 抽一张卡片
+func draw_card():
+	print("准备抽一张卡片")
+	var cards = get_draw_pile_cards()
+	if !cards.empty():
+		var card:Card = cards[0]
+		print("抽到了%s" % card)
+		move_card_to_hand(card)
+		inspect_card(card)
+		var result = card.on_draw()
+		if result is GDScriptFunctionState:
+			yield(result,"completed")
+	else:
+		print("没有可以抽的牌")
+	print("抽牌结束")
 
 # 计算最大手牌数量
 func hand_cards_max()->int:
 	return 3
 
+func trigger_control_phase()->void:
+	print("玩家控制阶段")
+	set_inspect_permission(true)
+	yield(GameManager,"control_finished")
+	set_inspect_permission(false)
+	print("控制阶段结束")
+	trigger_end_phase()
+	
 # 触发弃牌阶段
 func trigger_discard_phase()->void:
 	print("玩家弃牌阶段")
-	return
+	print("弃牌阶段完成")
+	trigger_start_phase()
 
 # 将抽牌堆洗牌
 func shuffel_draw_pile()->void:
@@ -329,6 +399,32 @@ func shuffel_draw_pile()->void:
 # 设置手卡显示状态(上下运动)
 func set_hand_cards_display(show:bool)->void:
 	hand_cards_pivot.flag_show = show
+
+# 设置是否可以检视卡片
+func set_inspect_permission(flag:bool)->void:
+	flag_inspect_state = flag
+	var void_area: = get_node("/root/main/void_area") as TextureButton
+	void_area.disabled = !flag
+	
+	# 获取场上和手牌的卡片
+	var cards = get_hand_cards()
+	cards.append_array(get_scene_cards())
+	cards.append_array(get_chara_cards())
+	
+	for card in cards:
+		card.get_node("card_interaction").disabled = !flag
+		if flag:
+			card.get_node("card_interaction").rect_scale = Vector2(1, 1)
+		else:
+			card.get_node("card_interaction").rect_scale = Vector2(0, 0)
+		
+		
+	for grid in grid_pivot.get_children():
+		grid.get_node("grid_button").disabled = flag
+		if flag:
+			grid.get_node("grid_button").rect_scale = Vector2(0, 0)
+		else:
+			grid.get_node("grid_button").rect_scale = Vector2(1, 1)
 
 # 拿起卡片进行检视
 func inspect_card(card_instance:Card)->void:
@@ -368,6 +464,7 @@ func set_prompt(msg:String,color:Color = Color.white):
 	prompt.text = msg
 	prompt.modulate = color
 
+# 从角色卡中数出某种卡片的数量
 func count_in_chara_cards(card_type)->int:
 	var count:int = 0
 	for i in get_chara_cards():

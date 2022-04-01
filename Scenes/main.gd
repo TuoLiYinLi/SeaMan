@@ -4,39 +4,38 @@ extends Node2D
 
 var G := GameManager
 
-var t=0
+var t = 0
 var c
+
+var a:Array
 
 func _ready():
 	G.create_grid_rect(9,9)
+	
 	G.get_grid_at(1,2).set_sea()
+	
+	c = G.create_card(G.card_woods)
+	G.move_card_to_draw_pile(c)
+	
+	c = G.create_card(G.card_woods)
+	G.move_card_to_draw_pile(c)
+	
 	c = G.create_card(G.card_log_cabin)
-	G.move_card_to_hand(c)
+	G.move_card_to_draw_pile(c)
+	
 	c = G.create_card(G.card_log_cabin)
-	G.move_card_to_hand(c)
+	G.move_card_to_draw_pile(c)
+	
+	
 	c = G.create_card(G.card_log_cabin)
-	G.move_card_to_hand(c)
-	c = G.create_card(G.card_log_cabin)
-	G.move_card_to_scene(c,2,2)
-	c = G.create_card(G.card_log_cabin)
-	G.move_card_to_scene(c,2,7)
-	c = G.create_card(G.card_log_cabin)
-	G.set_prompt("")
+	G.move_card_to_scene(c,4,4)
 	
 	G.trigger_start_phase()
+	
+	
 
 func _process(delta):
-	
 	control_view(delta)
-	t += 1
-	if(t == 500):
-		G.set_prompt("测试")
-		#G.inspect_card(c)
-		pass
-		#G.set_hand_cards_display(false)
-	if(t == 1000):
-		#G.finish_inspect_card()
-		pass
 
 # 控制视角
 func control_view(delta):

@@ -24,6 +24,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Cards/CardLogCabin.gd"
 }, {
+"base": "Card",
+"class": "CardWoods",
+"language": "GDScript",
+"path": "res://Cards/CardWoods.gd"
+}, {
 "base": "Node2D",
 "class": "HandCardsPivot",
 "language": "GDScript",
@@ -43,33 +48,16 @@ _global_script_classes=[ {
 "class": "TableGrid",
 "language": "GDScript",
 "path": "res://Scenes/table_grid.gd"
-}, {
-"base": "Node",
-"class": "TaskNode",
-"language": "GDScript",
-"path": "res://TaskNode/TaskNode.gd"
-}, {
-"base": "TaskNode",
-"class": "TaskNodeBlocking",
-"language": "GDScript",
-"path": "res://TaskNode/TaskNodeBlocking.gd"
-}, {
-"base": "TaskNode",
-"class": "TaskNodeSimple",
-"language": "GDScript",
-"path": "res://TaskNode/TaskNodeSimple.gd"
 } ]
 _global_script_class_icons={
 "Bell": "",
 "Card": "",
 "CardLogCabin": "",
+"CardWoods": "",
 "HandCardsPivot": "",
 "InspectCardPivot": "",
 "ResourcePivot": "",
-"TableGrid": "",
-"TaskNode": "",
-"TaskNodeBlocking": "",
-"TaskNodeSimple": ""
+"TableGrid": ""
 }
 
 [application]

@@ -8,17 +8,17 @@ func _ready():
 		print_debug("error: card not found")
 
 func _pressed():
-	print("pressed")
 	inspect_this_card()
 	
 
 # 进行检视
 func inspect_this_card():
-	if true:
 		GameManager.inspect_card(card)
 
 func _process(delta):
-	if is_hovered() and card.get_parent() == GameManager.scene_card_pivot:
+	# 展示下方卡片
+	if is_hovered() and card.get_parent() == GameManager.scene_card_pivot and GameManager.flag_inspect_state:
 		card.z_index = 1
 	else:
 		card.z_index = 0
+	

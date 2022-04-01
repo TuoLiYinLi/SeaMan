@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://Scenes/main.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/inspect_area_pivot.gd" type="Script" id=2]
@@ -16,6 +16,9 @@
 [ext_resource path="res://Textures/bell_ball.png" type="Texture" id=14]
 [ext_resource path="res://Scenes/bell_button.gd" type="Script" id=15]
 [ext_resource path="res://Scenes/day_num_pivot.gd" type="Script" id=16]
+
+[sub_resource type="StreamTexture" id=4]
+load_path = "res://.import/brown_paper.png-c52f97672a25cfe2695aaa0dbf0774d0.stex"
 
 [sub_resource type="CircleShape2D" id=2]
 
@@ -46,6 +49,10 @@ position = Vector2( -8, -16 )
 
 [node name="HUD" type="Node2D" parent="."]
 z_index = 1
+
+[node name="brown_paper" type="Sprite" parent="HUD"]
+position = Vector2( 1125, 287 )
+texture = SubResource( 4 )
 
 [node name="draw_pile_pivot" type="Node2D" parent="HUD"]
 position = Vector2( 40, 560 )
@@ -144,7 +151,6 @@ margin_bottom = 454.0
 rect_scale = Vector2( 2, 2 )
 theme = ExtResource( 11 )
 custom_colors/font_color_shadow = Color( 1, 1, 1, 0.25098 )
-text = "prompt text"
 align = 1
 valign = 1
 
@@ -194,7 +200,7 @@ offset = Vector2( 0, 36 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="HUD/bell/body_rb2d"]
 position = Vector2( -0.0999756, 16 )
-polygon = PoolVector2Array( -39.9, 20, -39.9, -12, 0.0999756, -61, 39.1, -5, 39.1, 22, 0, -32 )
+polygon = PoolVector2Array( -39.9, 20, -75.9, -7, 1.09998, -95, 77.1, -5, 39.1, 22, 0, -32 )
 
 [node name="PinJoint2D" type="PinJoint2D" parent="HUD/bell"]
 position = Vector2( -1, -41 )
