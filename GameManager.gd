@@ -6,6 +6,7 @@ var table_grid: = preload("res://Scenes/table_grid.tscn")
 var card_log_cabin: = preload("res://Cards/card_log_cabin.tscn")
 var card_woods: = preload("res://Cards/card_woods.tscn")
 var card_slime: = preload("res://Cards/card_slime.tscn")
+var card_fresh_fish: = preload("res://Cards/card_fresh_fish.tscn")
 
 var resource_pivot:ResourcePivot
 
@@ -27,6 +28,8 @@ var bell:Bell
 signal control_finished
 # 按下的网格，传递它的坐标
 signal table_grid_pressed(grid_x, grid_y)
+
+signal player_click
 
 # 是否允许检视卡片标志
 var flag_inspect_state = false
@@ -80,6 +83,10 @@ func _ready():
 	bell = get_node("/root/main/HUD/bell")
 	if !bell:
 		print_debug("error: bell not found")
+
+func _input(event):
+	if event.is_action_released("mouse_left"):
+		emit_signal("player_click")
 
 func fish_max()->int:
 	return 3 * count_in_scene_cards(CardLogCabin)
@@ -405,6 +412,7 @@ func draw_card():
 		print("抽到了%s" % card)
 		move_card_to_hand(card)
 		inspect_card(card)
+		yield(self,"player_click")
 		var result = card.on_draw()
 		if result is GDScriptFunctionState:
 			yield(result,"completed")

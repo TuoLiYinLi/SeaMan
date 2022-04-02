@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Scenes/main.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/inspect_area_pivot.gd" type="Script" id=2]
@@ -16,6 +16,7 @@
 [ext_resource path="res://Textures/bell_ball.png" type="Texture" id=14]
 [ext_resource path="res://Scenes/bell_button.gd" type="Script" id=15]
 [ext_resource path="res://Scenes/day_num_pivot.gd" type="Script" id=16]
+[ext_resource path="res://Scenes/brown_paper.gd" type="Script" id=17]
 
 [sub_resource type="StreamTexture" id=4]
 load_path = "res://.import/brown_paper.png-c52f97672a25cfe2695aaa0dbf0774d0.stex"
@@ -51,8 +52,25 @@ position = Vector2( -8, -16 )
 z_index = 1
 
 [node name="brown_paper" type="Sprite" parent="HUD"]
-position = Vector2( 1125, 287 )
+position = Vector2( 850, 285 )
+scale = Vector2( 1.5, 1.5 )
 texture = SubResource( 4 )
+script = ExtResource( 17 )
+
+[node name="card_info" type="Label" parent="HUD/brown_paper"]
+margin_left = -95.0
+margin_top = -117.0
+margin_right = 53.0
+margin_bottom = 50.0
+rect_scale = Vector2( 1.33, 1.33 )
+theme = ExtResource( 11 )
+custom_colors/font_color = Color( 0.380392, 0.192157, 0.101961, 1 )
+text = "卡片名称
+卡片效果
+卡片描述效果是什么有什么效果"
+align = 1
+valign = 1
+autowrap = true
 
 [node name="draw_pile_pivot" type="Node2D" parent="HUD"]
 position = Vector2( 40, 560 )

@@ -1,6 +1,11 @@
 extends Card
 class_name CardSlime
 
+func _ready():
+	info = """史莱姆
+	*当抽到时，自动使用，随机选择一个地面边缘位置放置为角色，之后抽一张卡片
+	*当回合结束时，破坏所在位置的卡片，或者移动距离1"""
+
 # 当抽到这张卡片时
 func on_draw():
 	var result = use()
@@ -11,7 +16,7 @@ func on_draw():
 # 使用手中的这张卡片
 func use():
 	GameManager.set_inspect_permission(false)
-	yield(get_tree().create_timer(1.5),"timeout")
+	# yield(get_tree().create_timer(1.5),"timeout")
 	GameManager.finish_inspect_card()
 	
 	var a := []

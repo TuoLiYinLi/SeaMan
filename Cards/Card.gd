@@ -10,6 +10,8 @@ var tar_scale:float = 1
 var grid_x:int = -1
 var grid_y:int = -1
 
+var info:String = """默认卡片信息"""
+
 var distance = 1
 var tar_distance = 1
 var k = 400

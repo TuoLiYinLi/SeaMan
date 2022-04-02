@@ -15,6 +15,9 @@ func _ready():
 	c = G.create_card(G.card_slime)
 	G.move_card_to_draw_pile(c)
 	
+	c = G.create_card(G.card_fresh_fish)
+	G.move_card_to_draw_pile(c)
+	
 	c = G.create_card(G.card_log_cabin)
 	G.move_card_to_scene(c,4,4)
 	
