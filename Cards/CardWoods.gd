@@ -4,8 +4,9 @@ class_name CardWoods
 
 func _ready():
 	info = """林地
-	*当抽到时，自动使用，必须选择一个地面位置放置为场景，之后抽一张卡片
-	*当被破坏时，获得2点木头"""
+	\u25cf当抽到时，自动使用，必须选择一个地面位置放置为场景，之后抽一张卡片
+	\u25cf当被破坏时，获得2点木头
+	【木头】"""
 
 # 当抽到这张卡片时
 func on_draw():
@@ -16,10 +17,10 @@ func on_draw():
 
 # 使用手中的这张卡片
 func use():
+	# 产生效果
+	GameManager.finish_inspect_card()
 	GameManager.set_inspect_permission(false)
 	GameManager.set_prompt("选择一个地面位置放置为场景")
-	# yield(get_tree().create_timer(1.5),"timeout")
-	GameManager.finish_inspect_card()
 	
 	for g in GameManager.grid_pivot.get_children():
 		if filter_grid(g):
@@ -32,11 +33,14 @@ func use():
 			GameManager.move_card_to_scene(self,result[0],result[1])
 			break
 		else:
-			print("选择不可用")
+			GameManager.set_prompt("选择无效，重新选择")
+			yield(get_tree().create_timer(0.5),"timeout")
+			GameManager.set_prompt("选择一个地面位置放置为场景")
 			
 	for g in GameManager.grid_pivot.get_children():
 		g.set_pattern_color(Color.white)
 		g.set_pattern_index(false)
+		
 	GameManager.set_inspect_permission(true)
 	GameManager.set_prompt("")
 	

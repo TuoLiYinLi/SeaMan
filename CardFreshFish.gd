@@ -4,7 +4,8 @@ class_name CardFreshFish
 
 func _ready():
 	info = """鲜鱼
-	*当抽到时，自动使用，获得1点鱼，之后抽一张卡片"""
+	\u25cf当抽到时，自动使用，获得1点鱼，之后抽一张卡片
+	【鱼】"""
 
 # 当抽到这张卡片时
 func on_draw():

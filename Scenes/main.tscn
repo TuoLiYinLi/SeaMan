@@ -52,7 +52,7 @@ position = Vector2( -8, -16 )
 z_index = 1
 
 [node name="brown_paper" type="Sprite" parent="HUD"]
-position = Vector2( 850, 285 )
+position = Vector2( 1215, 285 )
 scale = Vector2( 1.5, 1.5 )
 texture = SubResource( 4 )
 script = ExtResource( 17 )

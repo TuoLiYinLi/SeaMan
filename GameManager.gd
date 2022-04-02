@@ -92,7 +92,7 @@ func fish_max()->int:
 	return 3 * count_in_scene_cards(CardLogCabin)
 	
 func wood_max()->int:
-	return 3
+	return 3 * count_in_scene_cards(CardLogCabin)
 
 func check_resources():
 	check_fish()
@@ -382,6 +382,7 @@ func trigger_start_phase()->void:
 # 触发结束阶段
 func trigger_end_phase()->void:
 	print("第" + str(day_num) + "天结束阶段")
+	finish_inspect_card()
 	for c in get_chara_cards():
 		var result = c.on_end_phase()
 		if result is GDScriptFunctionState:
@@ -526,3 +527,28 @@ func count_in_scene_cards(card_type)->int:
 		if i is card_type:
 			count += 1
 	return count
+
+func check_card_tag(card:Card,tag:String):
+	return ("【%s】" % tag) in card.info
+
+func get_scene_in_distance(x:int, y:int, r:int)->Array:
+	var cards := []
+	for c in get_scene_cards():
+		if distance_between(c.grid_x,c.grid_y,x,y) <= r:
+			cards.append(c)
+	return cards
+
+func get_chara_in_distance(x:int, y:int, r:int)->Array:
+	var cards := []
+	for c in get_chara_cards():
+		if distance_between(c.grid_x,c.grid_y,x,y) <= r:
+			cards.append(c)
+	return cards
+
+func check_can_build_at(x:int, y:int)->bool:
+	if get_scene_card_at(x,y):
+		return false
+	for card in GameManager.get_scene_in_distance(x, y, 1):
+		if GameManager.check_card_tag(card,"建筑"):
+			return true
+	return false

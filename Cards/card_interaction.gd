@@ -8,7 +8,10 @@ func _ready():
 		print_debug("error: card not found")
 
 func _pressed():
-	inspect_this_card()
+	if GameManager.get_inspect_area_card() == card:
+		card.use()
+	else:
+		inspect_this_card()
 	
 
 # 进行检视
