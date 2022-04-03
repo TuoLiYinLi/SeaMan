@@ -16,13 +16,8 @@ func on_draw():
 
 # 使用手中的这张卡片
 func use():
-	GameManager.set_inspect_permission(false)
-	# yield(get_tree().create_timer(1.5),"timeout")
 	GameManager.move_card_to_discard_pile(self)
-	
-	GameManager.fish += 1
-	
-	GameManager.set_inspect_permission(true)
+	GameManager.fish += 1 + GameManager.count_in_scene_cards(CardFishingGear)
 	var result = GameManager.draw_card()
 	if result is GDScriptFunctionState:
 		yield(result,"completed")

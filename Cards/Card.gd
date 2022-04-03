@@ -17,11 +17,17 @@ var tar_distance = 1
 var k = 400
 
 var card_sprite:Sprite
+var card_border:Sprite
 
 func _ready():
 	card_sprite = get_node("card_sprite") as Sprite
 	if(!card_sprite):
 		print_debug("error: card_sprite not found")
+		
+	card_border = get_node("card_sprite/card_border") as Sprite
+	if(!card_border):
+		print_debug("error: card_border not found")
+	
 
 # 开始阶段时
 func on_start_phase():

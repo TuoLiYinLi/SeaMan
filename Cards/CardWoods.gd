@@ -18,8 +18,8 @@ func on_draw():
 # 使用手中的这张卡片
 func use():
 	# 产生效果
+	GameManager.set_state_select_grid()
 	GameManager.finish_inspect_card()
-	GameManager.set_inspect_permission(false)
 	GameManager.set_prompt("选择一个地面位置放置为场景")
 	
 	for g in GameManager.grid_pivot.get_children():
@@ -29,7 +29,7 @@ func use():
 			
 	while true:
 		var result = yield(GameManager,"table_grid_pressed")
-		if filter_grid(GameManager.get_grid_at(result[0],result[1])):
+		if filter_grid(GameManager.grid_at(result[0],result[1])):
 			GameManager.move_card_to_scene(self,result[0],result[1])
 			break
 		else:
@@ -41,15 +41,15 @@ func use():
 		g.set_pattern_color(Color.white)
 		g.set_pattern_index(false)
 		
-	GameManager.set_inspect_permission(true)
 	GameManager.set_prompt("")
+	GameManager.set_state_inspect()
 	
 	var result = GameManager.draw_card()
 	if result is GDScriptFunctionState:
 		yield(result,"completed")
 	
 func filter_grid(g:TableGrid)->bool:
-	return !g.flag_sea and !GameManager.get_scene_card_at(g.x,g.y)
+	return !g.flag_sea and !GameManager.scene_card_at(g.x,g.y)
 
 # 当被从场上摧毁时
 func on_destroy()->void:

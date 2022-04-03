@@ -1,0 +1,11 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Cards/Card.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Cards/CardFishingGear.gd" type="Script" id=2]
+[ext_resource path="res://Textures/fishing_gear.png" type="Texture" id=3]
+
+[node name="card_fishing_gear" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="card_sprite" parent="." index="0"]
+texture = ExtResource( 3 )

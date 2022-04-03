@@ -10,32 +10,33 @@ var c
 var a:Array
 
 func _ready():
+	
+	randomize()
+	
 	G.create_grid_rect(9,9)
-	
-	c = G.create_card(G.card_slime)
-	G.move_card_to_draw_pile(c)
-	
-	c = G.create_card(G.card_fresh_fish)
-	G.move_card_to_draw_pile(c)
 	
 	c = G.create_card(G.card_log_cabin)
 	G.move_card_to_scene(c,4,4)
 	
-	c = G.create_card(G.card_woods)
-	G.move_card_to_draw_pile(c)
+	G.move_card_to_draw_pile(G.create_card(G.card_woodcutter))
+	G.move_card_to_draw_pile(G.create_card(G.card_little_ents))
+	G.move_card_to_draw_pile(G.create_card(G.card_kipper_wigwam))
+	G.move_card_to_draw_pile(G.create_card(G.card_logging_camp))
+	G.move_card_to_draw_pile(G.create_card(G.card_working_table))
+	G.move_card_to_draw_pile(G.create_card(G.card_slime))
+	G.move_card_to_draw_pile(G.create_card(G.card_fresh_fish))
+	G.move_card_to_draw_pile(G.create_card(G.card_fresh_fish))
+	G.move_card_to_draw_pile(G.create_card(G.card_woods))
+	G.move_card_to_draw_pile(G.create_card(G.card_woods))
+	G.move_card_to_draw_pile(G.create_card(G.card_woods))
+	G.move_card_to_draw_pile(G.create_card(G.card_woods))
+	G.move_card_to_draw_pile(G.create_card(G.card_log_cabin))
+	G.move_card_to_draw_pile(G.create_card(G.card_fishing_gear))
+	G.move_card_to_draw_pile(G.create_card(G.card_fishing_gear))
 	
-	c = G.create_card(G.card_woods)
-	G.move_card_to_draw_pile(c)
+	yield(get_tree().create_timer(1),"timeout")
 	
-	c = G.create_card(G.card_log_cabin)
-	G.move_card_to_draw_pile(c)
-	
-	c = G.create_card(G.card_log_cabin)
-	G.move_card_to_draw_pile(c)	
-	
-	
-	G.trigger_start_phase()
-	
+	G.start_new_game()
 	
 
 func _process(delta):

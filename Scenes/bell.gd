@@ -4,6 +4,7 @@ class_name Bell
 var bell_body:RigidBody2D
 
 var d:float = 1
+var can_finish_control:bool = false
 
 func _ready():
 	bell_body = $body_rb2d
@@ -12,7 +13,8 @@ func _ready():
 
 func ring():
 	bell_body.apply_torque_impulse(d * 60000)
-	GameManager.emit_signal("control_finished")
+	if can_finish_control:
+		GameManager.emit_signal("control_finished")
 	d = - d
 	
 
