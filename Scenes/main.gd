@@ -18,6 +18,8 @@ func _ready():
 	c = G.create_card(G.card_log_cabin)
 	G.move_card_to_scene(c,4,4)
 	
+	G.move_card_to_draw_pile(G.create_card(G.card_guard))
+	G.move_card_to_draw_pile(G.create_card(G.card_wanted_poster))
 	G.move_card_to_draw_pile(G.create_card(G.card_woodcutter))
 	G.move_card_to_draw_pile(G.create_card(G.card_little_ents))
 	G.move_card_to_draw_pile(G.create_card(G.card_kipper_wigwam))

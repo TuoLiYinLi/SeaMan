@@ -30,6 +30,11 @@ _global_script_classes=[ {
 "path": "res://CardFreshFish.gd"
 }, {
 "base": "Card",
+"class": "CardGuard",
+"language": "GDScript",
+"path": "res://CardGuard.gd"
+}, {
+"base": "Card",
 "class": "CardKipperWigwam",
 "language": "GDScript",
 "path": "res://Cards/CardKipperWigwam.gd"
@@ -53,6 +58,11 @@ _global_script_classes=[ {
 "class": "CardSlime",
 "language": "GDScript",
 "path": "res://Cards/CardSlime.gd"
+}, {
+"base": "Card",
+"class": "CardWantedPoster",
+"language": "GDScript",
+"path": "res://Cards/CardWantedPoster.gd"
 }, {
 "base": "Card",
 "class": "CardWoodcutter",
@@ -99,11 +109,13 @@ _global_script_class_icons={
 "Card": "",
 "CardFishingGear": "",
 "CardFreshFish": "",
+"CardGuard": "",
 "CardKipperWigwam": "",
 "CardLittleEnts": "",
 "CardLogCabin": "",
 "CardLoggingCamp": "",
 "CardSlime": "",
+"CardWantedPoster": "",
 "CardWoodcutter": "",
 "CardWoods": "",
 "CardWorkingTable": "",

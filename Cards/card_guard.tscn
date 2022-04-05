@@ -1,0 +1,11 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Textures/guard.png" type="Texture" id=1]
+[ext_resource path="res://Cards/Card.tscn" type="PackedScene" id=2]
+[ext_resource path="res://CardGuard.gd" type="Script" id=3]
+
+[node name="card_guard" instance=ExtResource( 2 )]
+script = ExtResource( 3 )
+
+[node name="card_sprite" parent="." index="0"]
+texture = ExtResource( 1 )

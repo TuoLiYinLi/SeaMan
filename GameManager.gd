@@ -13,6 +13,8 @@ var card_working_table: = preload("res://Cards/card_working_table.tscn")	# 工�
 var card_kipper_wigwam: = preload("res://Cards/card_kipper_wigwam.tscn")	# 腌鱼棚
 var card_little_ents: = preload("res://Cards/card_little_ents.tscn")	# 小树精
 var card_woodcutter: = preload("res://Cards/card_woodcutter.tscn")	# 樵夫
+var card_guard: = preload("res://Cards/card_guard.tscn")	# 守卫
+var card_wanted_poster: = preload("res://Cards/card_wanted_poster.tscn")	# 通缉令
 
 var resource_pivot:ResourcePivot	#资源面板锚点引用
 
@@ -517,6 +519,7 @@ func trigger_discard_phase()->void:
 		set_state_select_specific_cards(hand_cards_all())
 		var result = yield(GameManager,"card_pressed")
 		move_card_to_discard_pile(result)
+		set_prompt("")
 		extra_card_panel.set_blackout_display(false)
 		set_state_lock()
 		
