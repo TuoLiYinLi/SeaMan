@@ -41,6 +41,9 @@ func on_destroy():
 # 当被从手牌丢弃时
 func on_discard():
 	pass
+# 当被剔除时
+func on_eliminate():
+	pass
 # 当抽到这张卡片时
 func on_draw():
 	return true
@@ -57,7 +60,7 @@ func tween_animation(delta):
 	var d = Vector2(position_tar_x, position_tar_y) - position
 	var d_length = d.length()
 	if d_length > 1:
-		translate(d.normalized() * tween_d(d_length) * delta * multiplier)
+		translate(d.normalized() * (tween_d(d_length)) * delta * multiplier)
 	
 	#更新缩放
 	distance += tween_d((tar_distance - distance) * k) / k * delta * multiplier

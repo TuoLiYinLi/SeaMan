@@ -22,14 +22,14 @@ func use():
 	GameManager.finish_inspect_card()
 	GameManager.set_state_select_grid()
 	
-	GameManager.set_prompt("选择一个可建造的位置放置为角色")
+	GameManager.set_prompt("选择一个地面位置放置为角色")
 	for g in GameManager.grid_pivot.get_children():
-		if !GameManager.chara_card_at(g.x,g.y):
+		if !GameManager.chara_card_at(g.x,g.y) and !GameManager.grid_at(g.x,g.y).flag_sea:
 			g.set_pattern_color(Color.green)
 			g.set_pattern_index(true)
 	# 等待选择			
 	var result = yield(GameManager,"table_grid_pressed")
-	if !GameManager.chara_card_at(result[0],result[1]):
+	if !GameManager.chara_card_at(result[0],result[1]) and !GameManager.grid_at(result[0],result[1]).flag_sea:
 		#选择成功
 		GameManager.move_card_to_chara(self,result[0],result[1])
 		GameManager.fish -= 1
@@ -71,7 +71,8 @@ func activate():
 			
 	# 等待选择
 	var result = yield(GameManager,"table_grid_pressed")
-	if !GameManager.chara_card_at(result[0],result[1]) and !GameManager.grid_at(result[0],result[1]).flag_sea:
+	var d = GameManager.distance_between(result[0],result[1],grid_x,grid_y)
+	if !GameManager.chara_card_at(result[0],result[1]) and !GameManager.grid_at(result[0],result[1]).flag_sea and d > 0 and d <= 1 :
 		#选择成功
 		GameManager.move_card_to_chara(self, result[0], result[1])
 		activated_times += 1

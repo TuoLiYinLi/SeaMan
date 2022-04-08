@@ -299,5 +299,8 @@ text = "第n轮
 align = 1
 script = ExtResource( 16 )
 
+[node name="menu" type="Node2D" parent="."]
+position = Vector2( 988, 36 )
+
 [connection signal="body_entered" from="HUD/bell/ball_rb2d" to="HUD/bell" method="_on_ball_rb2d_body_entered"]
 [connection signal="animation_finished" from="HUD/evil_eye/card_bg" to="HUD/evil_eye" method="_on_card_bg_animation_finished"]

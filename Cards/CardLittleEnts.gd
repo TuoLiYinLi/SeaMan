@@ -17,7 +17,7 @@ func on_draw():
 
 # 使用手中的这张卡片
 func use():
-	GameManager.finish_inspect_card()
+	#GameManager.finish_inspect_card()
 	
 	var a := []
 	for _x in range(9):
@@ -34,7 +34,7 @@ func use():
 	if result is GDScriptFunctionState:
 		yield(result,"completed")
 	
-# 回合结束时破坏所在位置的场景并移动范围1
+# 回合结束时移动范围1
 func on_end_phase():
 	
 	var a := []

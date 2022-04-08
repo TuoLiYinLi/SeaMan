@@ -6,6 +6,9 @@ var pivot:Node2D
 
 var extra_cards:Array = []
 
+var v:float = 0
+var length:float = 0
+
 func _ready():
 	blackout = $blackout
 	if !blackout:
@@ -13,9 +16,6 @@ func _ready():
 	pivot = $extra_cards_pivot
 	if !pivot:
 		print("pivot not found")
-
-func _input(event):
-	pass
 
 func set_blackout_display(show:bool):
 	blackout.visible = show
@@ -37,7 +37,8 @@ func add_card(card:Card):
 # 设置1张卡片的位置
 func set_card_position(card:Card, index:int):
 	card.position_tar_x = index % 4 * 120 - 180 +512
-	card.position_tar_y = index / 4 * 120 + 120
+	card.position_tar_y = index / 4 * 120 + 52
+	length = (index / 4 + 1) * 120
 	
 # 设置所有卡片的位置
 func reset_cards_position():
@@ -46,6 +47,8 @@ func reset_cards_position():
 		ec.move_to_extra()
 		set_card_position(ec.card, index)
 		index += 1
+	if length < 600:
+		pivot.translate(Vector2(0,300 - length * 0.5))
 
 # 把所有卡片送回原处
 func move_back_all():
@@ -53,6 +56,22 @@ func move_back_all():
 		if ec.card in get_all_cards():
 			ec.move_back()
 	extra_cards.clear()
+
+func _process(delta):
+	v *= 0.95
+	if abs(v) <= 0.01:
+		v = 0
+	if pivot.position.y + length < 600 and v < 0:
+		v = 0
+	elif pivot.position.y  > 0 and v > 0:
+		v = 0
+	pivot.translate(Vector2(0,v))
+
+func _input(event):
+	if event.is_action("scroll_up"):
+		v += 2
+	elif event.is_action("scroll_down"):
+		v -= 2
 
 # 额外卡片
 class ExtraCard:

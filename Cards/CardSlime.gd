@@ -18,12 +18,8 @@ func on_draw():
 func use():
 	GameManager.finish_inspect_card()
 	
-	var a := []
-	for _x in range(9):
-		for _y in range(9):
-			if _x==0||_x==8||_y==0||_x==8 and !GameManager.chara_card_at(_x,_y):
-				a.append(Vector2(_x,_y))
-	if a.size() == 0:
+	var a:Array = GameManager.grids_ground_border()
+	if a.empty():
 		GameManager.move_card_to_discard_pile(self)
 	else:
 		var p = a[randi() % a.size()]

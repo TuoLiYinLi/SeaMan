@@ -30,6 +30,11 @@ _global_script_classes=[ {
 "path": "res://Cards/CardConstructionPlanning.gd"
 }, {
 "base": "Card",
+"class": "CardDesperateFight",
+"language": "GDScript",
+"path": "res://Cards/CardDesperateFight.gd"
+}, {
+"base": "Card",
 "class": "CardFishingGear",
 "language": "GDScript",
 "path": "res://Cards/CardFishingGear.gd"
@@ -65,9 +70,39 @@ _global_script_classes=[ {
 "path": "res://Cards/CardLoggingCamp.gd"
 }, {
 "base": "Card",
+"class": "CardMuddyPath",
+"language": "GDScript",
+"path": "res://Cards/CardMuddyPath.gd"
+}, {
+"base": "Card",
+"class": "CardNurture",
+"language": "GDScript",
+"path": "res://Cards/CardNurture.gd"
+}, {
+"base": "Card",
+"class": "CardPit",
+"language": "GDScript",
+"path": "res://Cards/CardPit.gd"
+}, {
+"base": "Card",
+"class": "CardReading",
+"language": "GDScript",
+"path": "res://Cards/CardReading.gd"
+}, {
+"base": "Card",
+"class": "CardSeal",
+"language": "GDScript",
+"path": "res://Cards/CardSeal.gd"
+}, {
+"base": "Card",
 "class": "CardSlime",
 "language": "GDScript",
 "path": "res://Cards/CardSlime.gd"
+}, {
+"base": "Card",
+"class": "CardTide",
+"language": "GDScript",
+"path": "res://Cards/CardTide.gd"
 }, {
 "base": "Card",
 "class": "CardTower",
@@ -124,6 +159,7 @@ _global_script_class_icons={
 "Card": "",
 "CardBuildingRectification": "",
 "CardConstructionPlanning": "",
+"CardDesperateFight": "",
 "CardFishingGear": "",
 "CardFreshFish": "",
 "CardGuard": "",
@@ -131,7 +167,13 @@ _global_script_class_icons={
 "CardLittleEnts": "",
 "CardLogCabin": "",
 "CardLoggingCamp": "",
+"CardMuddyPath": "",
+"CardNurture": "",
+"CardPit": "",
+"CardReading": "",
+"CardSeal": "",
 "CardSlime": "",
+"CardTide": "",
 "CardTower": "",
 "CardWantedPoster": "",
 "CardWoodcutter": "",
@@ -157,6 +199,9 @@ GameManager="*res://GameManager.gd"
 [display]
 
 window/size/resizable=false
+window/dpi/allow_hidpi=true
+window/stretch/mode="2d"
+window/stretch/aspect="keep"
 
 [gdnative]
 
@@ -203,6 +248,16 @@ ui_down={
 mouse_left={
 "deadzone": 0.5,
 "events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+scroll_up={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":4,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+scroll_down={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":5,"pressed":false,"doubleclick":false,"script":null)
  ]
 }
 

@@ -15,9 +15,16 @@ var card_little_ents: = preload("res://Cards/card_little_ents.tscn")	# 小树精
 var card_woodcutter: = preload("res://Cards/card_woodcutter.tscn")	# 樵夫
 var card_guard: = preload("res://Cards/card_guard.tscn")	# 守卫
 var card_wanted_poster: = preload("res://Cards/card_wanted_poster.tscn")	# 通缉令
-var card_construction_planning: = preload("res://Cards/card_construction_planning.tscn")	# 通缉令
-var card_building_rectification: = preload("res://Cards/card_building_rectification.tscn")	# 通缉令
-var card_tower: = preload("res://Cards/card_tower.tscn")	# 通缉令
+var card_construction_planning: = preload("res://Cards/card_construction_planning.tscn")	# 建筑规划
+var card_building_rectification: = preload("res://Cards/card_building_rectification.tscn")	# 建筑整改
+var card_tower: = preload("res://Cards/card_tower.tscn")	# 哨塔
+var card_pit: = preload("res://Cards/card_pit.tscn")	# 坑
+var card_tide: = preload("res://Cards/card_tide.tscn")	# 海潮
+var card_nurture: = preload("res://Cards/card_nurture.tscn")	# 修养
+var card_reading: = preload("res://Cards/card_reading.tscn")	# 阅读
+var card_desperate_fight: = preload("res://Cards/card_desperate_fight.tscn")	# 拼命
+var card_muddy_path: = preload("res://Cards/card_muddy_path.tscn")	# 泥泞小路
+var card_seal: = preload("res://Cards/card_seal.tscn")	# 封印
 
 var resource_pivot:ResourcePivot	#资源面板锚点引用
 
@@ -186,6 +193,40 @@ func grid_at(x:int, y:int)->TableGrid:
 			return i
 	return null
 
+# 检查一个坐标是否是边缘
+func check_border(x:int, y:int)->bool:
+	var count: = 0
+	for g in grids_all():
+		if distance_between(x,y,g.x,g.y) == 1:
+			count += 1
+	return count < 4
+
+# 获取网格边缘
+func grids_border()->Array:
+	var out_array:Array = []
+	for g in grids_all():
+		if check_border(g.x,g.y):
+			out_array.append(g)
+			print(g.x,g.y)
+	return out_array
+
+func check_ground_border(x:int,y:int)->bool:
+	var count: = 0
+	for g in grids_all():
+		if !g.flag_sea and distance_between(x,y,g.x,g.y) == 1:
+			count += 1
+	return count < 4
+
+
+# 获取网格边缘
+func grids_ground_border()->Array:
+	var out_array:Array = []
+	for g in grids_all():
+		if check_ground_border(g.x,g.y):
+			out_array.append(g)
+			print(g.x,g.y)
+	return out_array
+
 # 获取所有的网格
 func grids_all()->Array:
 	return grid_pivot.get_children()
@@ -267,6 +308,14 @@ func destroy_card(card:Card):
 	var result = card.on_destroy()
 	if result is GDScriptFunctionState:
 		yield(result,"completed")
+
+func discard_card(card:Card):
+	move_card_to_discard_pile(card)
+	var result = card.on_discard()
+	if result is GDScriptFunctionState:
+		yield(result,"completed")
+	
+	
 
 # 把卡片移动到弃牌堆
 func move_card_to_discard_pile(card_instance:Card)->void:
@@ -440,6 +489,12 @@ func inspect_area_card()->Card:
 		return inspect_area_pivot.get_child(0) as Card
 	return null
 
+func eliminate_card(card:Card):
+	move_card_to_eliminate_area(card)
+	var result = card.on_eliminate()
+	if result is GDScriptFunctionState:
+			yield(result,"completed")
+
 # 把卡片移动到剔除区
 func move_card_to_eliminate_area(card_instance:Card)->void:
 	if !card_instance:
@@ -535,10 +590,13 @@ func trigger_discard_phase()->void:
 		extra_card_panel.set_blackout_display(true)
 		set_state_select_specific_cards(hand_cards_all())
 		var result = yield(GameManager,"card_pressed")
-		move_card_to_discard_pile(result)
 		set_prompt("")
 		extra_card_panel.set_blackout_display(false)
 		set_state_lock()
+		
+		result = discard_card(result)
+		if result is GDScriptFunctionState:
+			yield(result,"completed")
 		
 	print("弃牌阶段完成")
 	trigger_start_phase()
