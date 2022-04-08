@@ -4,7 +4,7 @@ class_name CardWorkingTable
 
 func _ready():
 	info="""加工台
-	\u25cf花费1点木头，1点鱼
+	\u25cf花费1点木头，1点鱼，选择一个可建造的位置放置为场景
 	\u25cf范围1内的“伐木场”额外获得1点木头
 	【建筑】"""
 

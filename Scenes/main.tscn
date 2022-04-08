@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://Scenes/main.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/inspect_area_pivot.gd" type="Script" id=2]
@@ -18,6 +18,10 @@
 [ext_resource path="res://Scenes/day_num_pivot.gd" type="Script" id=16]
 [ext_resource path="res://Scenes/brown_paper.gd" type="Script" id=17]
 [ext_resource path="res://Scenes/extra_card_panel.gd" type="Script" id=18]
+[ext_resource path="res://Textures/evil_eye_bg.png" type="Texture" id=19]
+[ext_resource path="res://Scenes/evil_eye.gd" type="Script" id=20]
+[ext_resource path="res://Textures/evil_eyeball.png" type="Texture" id=21]
+[ext_resource path="res://Textures/evil_pupil.png" type="Texture" id=22]
 
 [sub_resource type="StreamTexture" id=4]
 load_path = "res://.import/brown_paper.png-c52f97672a25cfe2695aaa0dbf0774d0.stex"
@@ -30,6 +34,34 @@ bounce = 0.33
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 9.0
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 19 )
+region = Rect2( 0, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 19 )
+region = Rect2( 64, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 19 )
+region = Rect2( 128, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 19 )
+region = Rect2( 192, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 19 )
+region = Rect2( 256, 0, 64, 64 )
+
+[sub_resource type="SpriteFrames" id=10]
+animations = [ {
+"frames": [ SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 8 ), SubResource( 7 ), SubResource( 6 ) ],
+"loop": true,
+"name": "eye",
+"speed": 24.0
+} ]
 
 [node name="main" type="Node2D"]
 script = ExtResource( 1 )
@@ -136,16 +168,29 @@ node_b = NodePath("../body_rb2d")
 [node name="draw_pile_pivot" type="Node2D" parent="HUD"]
 position = Vector2( 40, 560 )
 
+[node name="eliminate_area_pivot" type="Node2D" parent="HUD"]
+position = Vector2( 108, 560 )
+
 [node name="draw_pile_sprite" type="Sprite" parent="HUD"]
 position = Vector2( 40, 560 )
 texture = ExtResource( 9 )
 
+[node name="evil_eye" type="Node2D" parent="HUD"]
+position = Vector2( 108, 560 )
+script = ExtResource( 20 )
+
+[node name="eyeball" type="Sprite" parent="HUD/evil_eye"]
+texture = ExtResource( 21 )
+
+[node name="pupil" type="Sprite" parent="HUD/evil_eye"]
+texture = ExtResource( 22 )
+
+[node name="card_bg" type="AnimatedSprite" parent="HUD/evil_eye"]
+frames = SubResource( 10 )
+animation = "eye"
+
 [node name="discard_pile_pivot" type="Node2D" parent="HUD"]
 position = Vector2( 40, 492 )
-
-[node name="discard_pile_sprite" type="Sprite" parent="HUD"]
-position = Vector2( 40, 492 )
-texture = ExtResource( 9 )
 
 [node name="hand_cards_pivot" type="Node2D" parent="HUD"]
 position = Vector2( 512, 550 )
@@ -255,3 +300,4 @@ align = 1
 script = ExtResource( 16 )
 
 [connection signal="body_entered" from="HUD/bell/ball_rb2d" to="HUD/bell" method="_on_ball_rb2d_body_entered"]
+[connection signal="animation_finished" from="HUD/evil_eye/card_bg" to="HUD/evil_eye" method="_on_card_bg_animation_finished"]

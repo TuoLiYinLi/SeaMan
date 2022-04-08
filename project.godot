@@ -20,6 +20,16 @@ _global_script_classes=[ {
 "path": "res://Cards/Card.gd"
 }, {
 "base": "Card",
+"class": "CardBuildingRectification",
+"language": "GDScript",
+"path": "res://Cards/CardBuildingRectification.gd"
+}, {
+"base": "Card",
+"class": "CardConstructionPlanning",
+"language": "GDScript",
+"path": "res://Cards/CardConstructionPlanning.gd"
+}, {
+"base": "Card",
 "class": "CardFishingGear",
 "language": "GDScript",
 "path": "res://Cards/CardFishingGear.gd"
@@ -27,12 +37,12 @@ _global_script_classes=[ {
 "base": "Card",
 "class": "CardFreshFish",
 "language": "GDScript",
-"path": "res://CardFreshFish.gd"
+"path": "res://Cards/CardFreshFish.gd"
 }, {
 "base": "Card",
 "class": "CardGuard",
 "language": "GDScript",
-"path": "res://CardGuard.gd"
+"path": "res://Cards/CardGuard.gd"
 }, {
 "base": "Card",
 "class": "CardKipperWigwam",
@@ -52,12 +62,17 @@ _global_script_classes=[ {
 "base": "Card",
 "class": "CardLoggingCamp",
 "language": "GDScript",
-"path": "res://CardLoggingCamp.gd"
+"path": "res://Cards/CardLoggingCamp.gd"
 }, {
 "base": "Card",
 "class": "CardSlime",
 "language": "GDScript",
 "path": "res://Cards/CardSlime.gd"
+}, {
+"base": "Card",
+"class": "CardTower",
+"language": "GDScript",
+"path": "res://Cards/CardTower.gd"
 }, {
 "base": "Card",
 "class": "CardWantedPoster",
@@ -67,7 +82,7 @@ _global_script_classes=[ {
 "base": "Card",
 "class": "CardWoodcutter",
 "language": "GDScript",
-"path": "res://CardWoodcutter.gd"
+"path": "res://Cards/CardWoodcutter.gd"
 }, {
 "base": "Card",
 "class": "CardWoods",
@@ -77,7 +92,7 @@ _global_script_classes=[ {
 "base": "Card",
 "class": "CardWorkingTable",
 "language": "GDScript",
-"path": "res://CardWorkingTable.gd"
+"path": "res://Cards/CardWorkingTable.gd"
 }, {
 "base": "Node2D",
 "class": "ExtraCardPanel",
@@ -107,6 +122,8 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "Bell": "",
 "Card": "",
+"CardBuildingRectification": "",
+"CardConstructionPlanning": "",
 "CardFishingGear": "",
 "CardFreshFish": "",
 "CardGuard": "",
@@ -115,6 +132,7 @@ _global_script_class_icons={
 "CardLogCabin": "",
 "CardLoggingCamp": "",
 "CardSlime": "",
+"CardTower": "",
 "CardWantedPoster": "",
 "CardWoodcutter": "",
 "CardWoods": "",

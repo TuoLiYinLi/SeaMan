@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://CardWorkingTable.gd" type="Script" id=1]
+[ext_resource path="res://Cards/CardWorkingTable.gd" type="Script" id=1]
 [ext_resource path="res://Cards/Card.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Textures/working_table.png" type="Texture" id=3]
 

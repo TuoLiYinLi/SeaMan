@@ -18,6 +18,9 @@ func _ready():
 	c = G.create_card(G.card_log_cabin)
 	G.move_card_to_scene(c,4,4)
 	
+	G.move_card_to_draw_pile(G.create_card(G.card_tower))
+	G.move_card_to_draw_pile(G.create_card(G.card_building_rectification))
+	G.move_card_to_draw_pile(G.create_card(G.card_construction_planning))
 	G.move_card_to_draw_pile(G.create_card(G.card_guard))
 	G.move_card_to_draw_pile(G.create_card(G.card_wanted_poster))
 	G.move_card_to_draw_pile(G.create_card(G.card_woodcutter))
@@ -37,6 +40,9 @@ func _ready():
 	G.move_card_to_draw_pile(G.create_card(G.card_fishing_gear))
 	
 	yield(get_tree().create_timer(1),"timeout")
+	
+	G.fish=3
+	G.wood=3
 	
 	G.start_new_game()
 	

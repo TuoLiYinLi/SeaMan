@@ -15,6 +15,9 @@ var card_little_ents: = preload("res://Cards/card_little_ents.tscn")	# 小树精
 var card_woodcutter: = preload("res://Cards/card_woodcutter.tscn")	# 樵夫
 var card_guard: = preload("res://Cards/card_guard.tscn")	# 守卫
 var card_wanted_poster: = preload("res://Cards/card_wanted_poster.tscn")	# 通缉令
+var card_construction_planning: = preload("res://Cards/card_construction_planning.tscn")	# 通缉令
+var card_building_rectification: = preload("res://Cards/card_building_rectification.tscn")	# 通缉令
+var card_tower: = preload("res://Cards/card_tower.tscn")	# 通缉令
 
 var resource_pivot:ResourcePivot	#资源面板锚点引用
 
@@ -27,6 +30,7 @@ var inspect_area_pivot:InspectCardPivot	# 检视区锚点引用
 var hand_cards_pivot:HandCardsPivot	# 手卡锚点引用
 var draw_pile_pivot:Node2D	# 抽牌堆锚点引用
 var discard_pile_pivot:Node2D	#弃牌堆锚点引用 
+var eliminate_area_pivot:Node2D	#剔除区锚点引用 
 
 var prompt:Label	# 提示语的引用
 
@@ -96,6 +100,10 @@ func _ready():
 	discard_pile_pivot = get_node("/root/main/HUD/discard_pile_pivot")
 	if !discard_pile_pivot:
 		print_debug("error: discard_pile_pivot not found")
+		
+	eliminate_area_pivot = get_node("/root/main/HUD/eliminate_area_pivot")
+	if !discard_pile_pivot:
+		print_debug("error: eliminate_area_pivot not found")
 	
 	prompt = get_node("/root/main/HUD/prompt")
 	if !prompt:
@@ -395,6 +403,7 @@ func cards_all()->Array:
 	cards.append_array(scene_card_pivot.get_children())
 	cards.append_array(draw_pile_pivot.get_children())
 	cards.append_array(discard_pile_pivot.get_children())
+	cards.append_array(eliminate_area_pivot.get_children())
 	var c = inspect_area_card()
 	if c:
 		cards.append(c)
@@ -433,7 +442,15 @@ func inspect_area_card()->Card:
 
 # 把卡片移动到剔除区
 func move_card_to_eliminate_area(card_instance:Card)->void:
-	pass
+	if !card_instance:
+		print_debug("error: card_instance = null")
+		return
+	print("移动卡片到剔除区" + card_instance.to_string())
+	change_parent_keep_position(card_instance, eliminate_area_pivot)
+	
+	card_instance.position_tar_x = 0
+	card_instance.position_tar_y = 0
+	card_instance.tar_distance = 1
 
 # 触发开始阶段
 func trigger_start_phase()->void:
@@ -630,16 +647,11 @@ func set_state_lock()->void:
 	# 检视
 	void_area.disabled = true
 	# 手牌
-	var cards = hand_cards_all()
+	var cards = cards_all()
 	for card in cards:
 		card.get_node("card_interaction").disabled = true
 		card.get_node("card_interaction").rect_scale = Vector2(0, 0)
-	# 场上卡片
-	cards = scene_cards_all()
-	cards.append_array(chara_cards_all())
-	for card in cards:
-		card.get_node("card_interaction").disabled = true
-		card.get_node("card_interaction").rect_scale = Vector2(0, 0)
+	
 	# 网格
 	for grid in grid_pivot.get_children():
 		grid.get_node("grid_button").disabled = true

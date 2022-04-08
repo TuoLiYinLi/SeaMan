@@ -29,7 +29,7 @@ func use():
 		GameManager.highlight_card(c)
 		# 等待选择			
 	var result = yield(GameManager,"card_pressed")
-	if !GameManager.check_card_tag(result,"不可破坏"):
+	if !GameManager.check_card_tag(result,"不可破坏") and result in GameManager.chara_cards_all():
 		#选择成功
 		GameManager.reset_highlight_card()
 		GameManager.destroy_card(result)
