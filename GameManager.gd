@@ -25,6 +25,10 @@ var card_reading: = preload("res://Cards/card_reading.tscn")	# 阅读
 var card_desperate_fight: = preload("res://Cards/card_desperate_fight.tscn")	# 拼命
 var card_muddy_path: = preload("res://Cards/card_muddy_path.tscn")	# 泥泞小路
 var card_seal: = preload("res://Cards/card_seal.tscn")	# 封印
+var card_riprap: = preload("res://Cards/card_riprap.tscn")	# 乱石堆
+var card_slime_multiplication: = preload("res://Cards/card_slime_multiplication.tscn")	# 史莱姆增殖
+var card_woods_growth: = preload("res://Cards/card_woods_growth.tscn")	# 林地生长
+var card_crow: = preload("res://Cards/card_crow.tscn")	# 乌鸦
 
 var resource_pivot:ResourcePivot	#资源面板锚点引用
 
@@ -569,7 +573,7 @@ func draw_card():
 
 # 计算最大手牌数量
 func hand_cards_max()->int:
-	return 3
+	return 3 + count_in_scene_cards(CardRiprap)
 
 # 触发玩家控制阶段
 func trigger_control_phase()->void:

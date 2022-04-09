@@ -4,7 +4,7 @@ class_name CardSeal
 
 func _ready():
 	info="""封印
-	\u25cf花费2点理智，从弃牌堆中选择一张卡片，剔除它和此卡
+	\u25cf花费2点理智使用，从弃牌堆中选择一张卡片，剔除它和此卡
 	"""
 
 func use():

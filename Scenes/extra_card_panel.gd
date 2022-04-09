@@ -38,7 +38,6 @@ func add_card(card:Card):
 func set_card_position(card:Card, index:int):
 	card.position_tar_x = index % 4 * 120 - 180 +512
 	card.position_tar_y = index / 4 * 120 + 52
-	length = (index / 4 + 1) * 120
 	
 # 设置所有卡片的位置
 func reset_cards_position():
@@ -47,6 +46,7 @@ func reset_cards_position():
 		ec.move_to_extra()
 		set_card_position(ec.card, index)
 		index += 1
+	length = (index / 4 + 1) * 120
 	if length < 600:
 		pivot.translate(Vector2(0,300 - length * 0.5))
 
@@ -56,6 +56,8 @@ func move_back_all():
 		if ec.card in get_all_cards():
 			ec.move_back()
 	extra_cards.clear()
+	length = 0
+	pivot.position = Vector2(0, 0)
 
 func _process(delta):
 	v *= 0.95
